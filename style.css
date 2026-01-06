@@ -1,0 +1,195 @@
+/* 安安的一天 - 温馨主题样式 */
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    /* 1. 背景色：柔和米白 */
+    background-color: #F7F4F0; 
+    color: #333333; /* 字体颜色：深灰 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6; /* 增加行距 */
+}
+
+#game-container {
+    background-color: #FFFFFF; /* 容器背景：纯白 */
+    /* 1. 卡片边缘：增加圆角和阴影 */
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+    width: 90%;
+    max-width: 650px; /* 略微放宽容器 */
+    padding: 40px;
+    text-align: center;
+    position: relative; /* 用于定位彩蛋按钮 */
+}
+
+h1 {
+    /* 2. 主标题色：海蓝色/鸽灰色 */
+    color: #4A6D88; 
+    margin-bottom: 10px;
+    font-size: 2.5em;
+    font-weight: 300; /* 略微减轻粗细 */
+}
+
+#ending-title {
+    /* 结局提示标题样式 */
+    font-size: 1.2em;
+    color: #E8746F; /* 柔和珊瑚红 */
+    margin-top: -10px; 
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+#content-area {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#node-text {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    white-space: pre-wrap;
+    /* 保证文字在布局调整后有足够的空间 */
+    padding: 10px 0; 
+}
+
+#media-container {
+    min-height: 200px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+}
+
+#media-container img, #media-container video {
+    max-width: 100%;
+    height: auto;
+    /* 3. 图片展示：轻微圆角和阴影 */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #F0F0F0; /* 浅灰色边框 */
+}
+
+/* --- 选项按钮通用样式 --- */
+
+#options-container button, #restart-button {
+    display: block;
+    width: 100%;
+/* 新增：在顶部添加温柔的点状分隔线 */
+    border-top: 1px dashed #DCDCDC; /* 浅灰色点状线 */
+    padding-top: 30px; /* 增加与上方内容的间距 */
+    margin-top: 10px; /* 增加与内容区的间距 */
+    padding: 14px 20px; /* 增加内边距 */
+    margin-bottom: 12px;
+    font-size: 1.05em;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 8px; /* 更圆润的按钮 */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+/* 主要按钮样式：柔和松绿 */
+#options-container button {
+    background-color: #91C7B1;
+}
+
+#options-container button:hover {
+    background-color: #7BB69E;
+    transform: translateY(-1px); /* 轻微上浮反馈 */
+}
+
+/* 返回上一题按钮样式：中性灰 */
+#options-container button[style*="background-color: rgb(144, 144, 144)"] {
+    background-color: #A8A8A8 !important;
+    margin-top: 20px;
+}
+#options-container button[style*="background-color: rgb(144, 144, 144)"]:hover {
+    background-color: #909090 !important;
+}
+
+/* 结局重启按钮样式：柔和珊瑚红 */
+#restart-button {
+    background-color: #E8746F;
+    width: auto !important; /* 恢复宽度自适应 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#restart-button:hover {
+    background-color: #D66A65;
+}
+
+
+/* --- Q1 选项容器样式 --- */
+#options-container[style*="grid"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr; 
+    gap: 30px; /* 增加间距 */
+    margin-top: 20px;
+}
+
+.q1-option-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background-color: #F7F7F7; /* 浅底色 */
+    border-radius: 12px;
+}
+
+.q1-option-box img {
+    max-width: 100%;
+    height: auto;
+    max-height: 150px; 
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.q1-option-box button {
+    margin-top: auto; 
+}
+
+
+/* --- 首页彩蛋按钮定位样式 --- */
+#bug-report-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+#bug-report-container button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #555555; /* 深一点的灰 */
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    opacity: 0.7; 
+}
+
+#bug-report-container button:hover {
+    opacity: 1;
+    color: #4A6D88; /* 悬停时颜色变成主标题色 */
+}
+
+/* 图片和视频的悬停效果 */
+#media-container img, #media-container video {
+    /* 确保过渡效果平滑 */
+    transition: all 0.3s ease-in-out; 
+}
+
+#media-container img:hover, #media-container video:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* 阴影更深 */
+    transform: scale(1.01); /* 轻轻放大 1% */
+    cursor: pointer; /* 增加鼠标指针提示 */
+}
