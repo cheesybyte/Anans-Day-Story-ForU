@@ -1,12 +1,6 @@
-// --- script.js 顶部新增 DOM 引用 ---
-// ... (在 mediaFolderPath = '媒体/'; 之后添加) ...
-const endingTitleEl = document.getElementById('ending-title');
-const bugReportContainerEl = document.getElementById('bug-report-container');
+// --- script.js 文件内容开始 ---
 
-// ... (其他函数和变量定义保持不变) ...
-
-
-// --- 游戏数据结构 (严格按照上传文档  编写) ---
+// --- 游戏数据结构 (包含所有修正、媒体位置和结局提示) ---
 const gameNodes = {
     // 网页首页
     '网页首页': {
@@ -19,7 +13,7 @@ const gameNodes = {
         ]
     },
     
-// Q1 - 修正：将图片作为选项的引导图片显示
+    // Q1 - 修正：将图片作为选项的引导图片显示
     'Q1': {
         text: '明明是周末，你却一反常态，今天早上醒得很早。此时你：',
         media: { // 节点自带媒体，用于在选项区显示
@@ -46,12 +40,11 @@ const gameNodes = {
         ]
     },
     
-// Q2-B - 修正：将图片移到选项中
+    // Q2-B
     'Q2-B': {
         text: '过了很久，安安终于醒了，那就：',
-        media: null, // 移除节点自带媒体
+        media: null,
         options: [
-            // 修正后的选项：媒体定义在选项内部
             { text: '给安安吃点东西吧！', nextNode: 'Q5', media: { type: 'image', src: '图片：给安安吃' } },
             { text: '无', nextNode: null },
             { text: '无', nextNode: null }
@@ -97,10 +90,10 @@ const gameNodes = {
         ]
     },
 
-// Q4 - 修正：将节点主媒体移到选项中 (保持逻辑一致性)
+    // Q4
     'Q4': {
         text: '一人一狗终于回到家，你决定：',
-        media: null, // 移除节点自带媒体
+        media: null, 
         options: [
             { text: '先给安安吃点东西', nextNode: 'Q5', media: { type: 'image', src: '图片：给安安吃' } },
             { text: '先休息一下，不给安安吃东西', nextNode: '结局1', media: { type: 'image', src: '图片：晾在一边' } },
@@ -143,76 +136,57 @@ const gameNodes = {
         ]
     },
 
-// Q8 - 修正：将图片/视频移到选项中
+    // Q8
     'Q8': {
         text: '经历了一阵跋涉，终于到家了🏠考虑到安安的孝行，你又决定：',
-        media: null, // 移除节点自带媒体
+        media: null,
         options: [
-            // 修正后的选项：视频在选项内部
             { text: '带安安继续去小区里玩一会儿吧！', nextNode: 'Q9', media: { type: 'video', src: '视频：继续遛狗' } },
-            // 修正后的选项：图片在选项内部
             { text: '陪安安在客厅里玩一会儿吧！', nextNode: 'Q9', media: { type: 'image', src: '图片：客厅里玩' } },
             { text: '无', nextNode: null }
         ]
     },
 
-    // Q9 - 修正：将图片移到选项中
+    // Q9
     'Q9': {
         text: '一阵玩耍后，你和安安都玩累了。无所事事的晚上，现在就休息吧！',
-        media: null, // 移除节点自带媒体
+        media: null,
         options: [
-            // 修正后的选项：图片在选项内部
             { text: '这样睡吧^o^', nextNode: '结局4（大结局）', media: { type: 'image', src: '图片：111' } },
-            // 修正后的选项：图片在选项内部
             { text: '那样睡吧^3^', nextNode: '结局4（大结局）', media: { type: 'image', src: '图片：222' } },
             { text: '无', nextNode: null }
         ]
     },
 
-// 结局1
+    // 结局节点 (包含结局提示和您的最新修改)
     '结局1': {
         text: '安安这么可爱怎么可以不给安安吃东西？！',
-        endingTitle: '结局1', // 新增结局提示
+        endingTitle: '结局1',
         media: { node: { type: 'image', src: '图片：可爱安安' } },
         options: [{ text: '从头开始，保证会对安安好一点', nextNode: '网页首页', isEnding: true }, { text: '无', nextNode: null }, { text: '无', nextNode: null }]
     },
-    
-    // 结局2
     '结局2': {
         text: '新闻：上海一大学生因与宠物狗玩耍，竟然错过毕业论文答辩。',
-        endingTitle: '结局2', // 新增结局提示
+        endingTitle: '结局2',
         media: { node: { type: 'image', src: '图片：睡午觉' } },
         options: [{ text: '从头开始，保证不会因狗废学', nextNode: '网页首页', isEnding: true }, { text: '无', nextNode: null }, { text: '无', nextNode: null }]
     },
-    
-    // 结局3
     '结局3': {
         text: '宁愿在哈啰单车上笑，也不要在宝马里哭。',
-        endingTitle: '结局3', // 新增结局提示
+        endingTitle: '结局3',
         media: null,
         options: [{ text: '从头开始，保证安安会在母父奶爷的护送下安全出行', nextNode: '网页首页', isEnding: true }, { text: '无', nextNode: null }, { text: '无', nextNode: null }]
     },
-    
-    // 结局4
     '结局4（大结局）': {
         text: '如果是和安安的话，只是这样过简单的一天也很好。',
-        endingTitle: '结局4（大结局）', // 新增结局提示
+        endingTitle: '结局4 (大结局)',
         media: null,
         options: [{ text: '从头开始，看看这一天还会有什么事发生？', nextNode: '网页首页', isEnding: true }, { text: '无', nextNode: null }, { text: '无', nextNode: null }]
     },
-    
-    // 结局4（大结局）
-    '结局4（大结局）': {
-        text: '如果是和安安的话，只是这样过简单的一天也很好。',
-        endingTitle: '结局4 (大结局)', // 新增结局提示
-        media: null,
-        options: [{ text: '从头开始，看看这一天还会有什么事发生？', nextNode: '网页首页', isEnding: true }, { text: '无', nextNode: null }, { text: '无', nextNode: null }]
-    },
-    
-    // 结局5（隐藏结局）
+    // 您的最新修改
     '结局5（隐藏结局）': {
         text: '在汪星也是最善良勇敢可爱阳光的小狗安安',
-        endingTitle: '结局5 (隐藏结局)', // 新增结局提示
+        endingTitle: '结局5 (隐藏结局)',
         media: { node: { type: 'image', src: '图片：汪星' } },
         options: [{ text: '回到主页', nextNode: '网页首页', isEnding: true }, { text: '无', nextNode: null }, { text: '无', nextNode: null }]
     }
@@ -227,6 +201,8 @@ const mediaContainerEl = document.getElementById('media-container');
 const optionsContainerEl = document.getElementById('options-container');
 const restartContainerEl = document.getElementById('restart-container');
 const restartButtonEl = document.getElementById('restart-button');
+const endingTitleEl = document.getElementById('ending-title');
+const bugReportContainerEl = document.getElementById('bug-report-container'); // 确保引用了彩蛋容器
 const mediaFolderPath = '媒体/'; 
 
 /**
@@ -264,14 +240,11 @@ function goBack() {
     }
 }
 
-// --- 修改后的 displayNode 函数 (重点关注首页和结局逻辑) ---
-
 /**
  * 根据当前节点ID更新游戏界面。
  */
 function displayNode(nodeKey, selectedOptionMedia = null, isBack = false) {
     const node = gameNodes[nodeKey];
-    // ... (其他检查和历史记录逻辑不变) ...
     if (!node) {
         console.error('Node not found:', nodeKey);
         return;
@@ -282,11 +255,11 @@ function displayNode(nodeKey, selectedOptionMedia = null, isBack = false) {
         history.push(nodeKey);
     }
     
-// 2. 清空/初始化区域
+    // 2. 清空/初始化区域
     mediaContainerEl.innerHTML = '';
     optionsContainerEl.innerHTML = '';
     restartContainerEl.style.display = 'none';
-    endingTitleEl.style.display = 'none'; // 隐藏结局提示
+    endingTitleEl.style.display = 'none';
     endingTitleEl.textContent = '';
     bugReportContainerEl.innerHTML = ''; // 清空彩蛋按钮容器
     
@@ -312,21 +285,25 @@ function displayNode(nodeKey, selectedOptionMedia = null, isBack = false) {
     nodeTextEl.textContent = node.text;
 
 
-// 5. 选项按钮处理和容器显示控制
+    // 5. 选项按钮处理和容器显示控制
     const isEndingNode = nodeKey.startsWith('结局');
     optionsContainerEl.style.display = 'block';
 
-    // Q1 节点特殊处理
+    // Q1 节点特殊处理 (调整布局)
     if (nodeKey === 'Q1') {
         optionsContainerEl.style.display = 'grid'; 
         optionsContainerEl.style.gridTemplateColumns = '1fr 1fr';
-        optionsContainerEl.style.gap = '20px';
+        optionsContainerEl.style.gap = '30px'; // 使用CSS建议的30px
+    } else {
+        // 确保非Q1节点是常规的 flex/block 布局
+        optionsContainerEl.style.display = 'flex';
+        optionsContainerEl.style.flexDirection = 'column';
     } 
 
     // 如果不是结局，则创建常规选项
     if (!isEndingNode) {
         
-        // 5a. 【首页彩蛋处理】
+        // 5a. 【首页彩蛋处理】 <-- 此处是修复重点，保证逻辑完整
         if (nodeKey === '网页首页') {
             // 从选项中找到隐藏结局的选项
             const hiddenOption = node.options.find(opt => opt.nextNode === '结局5（隐藏结局）');
@@ -354,62 +331,62 @@ function displayNode(nodeKey, selectedOptionMedia = null, isBack = false) {
                 optionsContainerEl.appendChild(startButton);
             }
             
-            // 首页选项处理完成，跳过下面的通用选项遍历
-            
-        } else {
-             // 5b. 【非首页问答节点通用选项创建和返回按钮】
-            node.options.forEach((option, index) => {
-                // ... (Q1 选项创建逻辑不变) ...
-                if (option.text !== '无' && option.nextNode) {
-                    if (nodeKey === 'Q1') {
-                         // Q1 选项创建 (带预览图) 逻辑...
-                         const optionBox = document.createElement('div');
-                         optionBox.className = 'q1-option-box';
-                         
-                         let optionMedia = null;
-                         if (index === 0 && node.media.a) { 
-                             optionMedia = node.media.a;
-                         } else if (index === 1 && node.media.b) { 
-                             optionMedia = node.media.b;
-                         }
-                         const previewEl = createMediaElement(optionMedia);
-                         if (previewEl) {
-                             previewEl.style.maxHeight = '150px';
-                             previewEl.style.marginBottom = '10px';
-                             optionBox.appendChild(previewEl);
-                         }
-     
-                         const button = document.createElement('button');
-                         button.textContent = option.text;
-                         button.addEventListener('click', () => {
-                             currentNodeKey = option.nextNode;
-                             displayNode(currentNodeKey, option.media); 
-                         });
-                         optionBox.appendChild(button);
-                         optionsContainerEl.appendChild(optionBox);
-
-                    } else {
-                        // Q2+ 节点按钮
-                        const button = document.createElement('button');
-                        button.textContent = option.text;
-                        button.addEventListener('click', () => {
-                            currentNodeKey = option.nextNode;
-                            displayNode(currentNodeKey, option.media);
-                        });
-                        optionsContainerEl.appendChild(button);
+            // 首页逻辑处理完毕，直接返回，跳过后面的通用选项逻辑
+            return; 
+        } 
+        
+        // 5b. 【非首页/非结局问答节点通用选项创建和返回按钮】
+        node.options.forEach((option, index) => {
+            if (option.text !== '无' && option.nextNode) {
+                
+                if (nodeKey === 'Q1') {
+                    // Q1 选项创建 (带预览图)
+                    const optionBox = document.createElement('div');
+                    optionBox.className = 'q1-option-box';
+                    
+                    let optionMedia = null;
+                    if (index === 0 && node.media.a) { 
+                        optionMedia = node.media.a;
+                    } else if (index === 1 && node.media.b) { 
+                        optionMedia = node.media.b;
                     }
-                }
-            });
+                    const previewEl = createMediaElement(optionMedia);
+                    if (previewEl) {
+                        previewEl.style.maxHeight = '150px';
+                        previewEl.style.marginBottom = '15px';
+                        optionBox.appendChild(previewEl);
+                    }
 
-            // 6. 新增“返回上一题”按钮 (非结局节点，非首页)
-            if (nodeKey !== '网页首页' && history.length > 0) {
-                const backButton = document.createElement('button');
-                backButton.textContent = '返回上一题';
-                backButton.style.backgroundColor = '#909090'; 
-                backButton.style.marginTop = '20px';
-                backButton.addEventListener('click', goBack);
-                optionsContainerEl.appendChild(backButton);
+                    const button = document.createElement('button');
+                    button.textContent = option.text;
+                    button.addEventListener('click', () => {
+                        currentNodeKey = option.nextNode;
+                        displayNode(currentNodeKey, option.media); 
+                    });
+                    optionBox.appendChild(button);
+                    optionsContainerEl.appendChild(optionBox);
+
+                } else {
+                    // Q2+ 节点按钮
+                    const button = document.createElement('button');
+                    button.textContent = option.text;
+                    button.addEventListener('click', () => {
+                        currentNodeKey = option.nextNode;
+                        displayNode(currentNodeKey, option.media);
+                    });
+                    optionsContainerEl.appendChild(button);
+                }
             }
+        });
+
+        // 6. 新增“返回上一题”按钮 (非结局节点，非首页)
+        if (nodeKey !== '网页首页' && history.length > 0) {
+            const backButton = document.createElement('button');
+            backButton.textContent = '返回上一题';
+            backButton.style.backgroundColor = '#909090'; 
+            backButton.style.marginTop = '20px';
+            backButton.addEventListener('click', goBack);
+            optionsContainerEl.appendChild(backButton);
         }
 
     }
@@ -420,7 +397,7 @@ function displayNode(nodeKey, selectedOptionMedia = null, isBack = false) {
         optionsContainerEl.style.display = 'none'; 
         restartContainerEl.style.display = 'block'; 
 
-        // 【新增：显示结局提示】
+        // 显示结局提示
         if (node.endingTitle) {
             endingTitleEl.textContent = node.endingTitle;
             endingTitleEl.style.display = 'block';
@@ -445,3 +422,4 @@ document.addEventListener('DOMContentLoaded', () => {
     
     displayNode(currentNodeKey);
 });
+// --- script.js 文件内容结束 ---
